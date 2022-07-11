@@ -12,5 +12,3 @@ client.on("error", (err: any) => console.error(err));
 client.connect();
 
 export { client };
-
-

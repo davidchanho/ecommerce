@@ -1,11 +1,10 @@
 import { Request, Response } from "express";
-import CartServices from "../services/cart.services";
-
-const cart = new CartServices();
+import { client } from "../config/redis";
+import { cartKey } from "../utils/helpers/keys";
 
 export async function addToCart(req: Request, res: Response) {
     try {
-        await cart.addToCart(req.params.session, {
+        await client.hSet(cartKey(req.params.session), {
             name: req.body.name,
             quantity: req.body.quantity,
         });
@@ -17,9 +16,16 @@ export async function addToCart(req: Request, res: Response) {
 
 export async function getCart(req: Request, res: Response) {
     try {
-        const result = await cart.getCart(req.params.session);
+        const result = await client.hGetAll(cartKey(req.params.session));
 
-        return res.status(200).json(result);
+        if (Object.keys(result).length === 0) {
+            throw new Error("Cart not found");
+        }
+
+        return res.status(200).json({
+            ...result,
+            quantity: parseInt(result.quantity),
+        });
     } catch (error: any) {
         return res.status(400).json(error.message);
     }
@@ -27,7 +33,7 @@ export async function getCart(req: Request, res: Response) {
 
 export async function removeCart(req: Request, res: Response) {
     try {
-        const result = await cart.removeCart(req.params.session);
+        const result = await client.del(cartKey(req.params.session));
         return res.status(200).json(result);
     } catch (error: any) {
         return res.status(400).json(error.message);
