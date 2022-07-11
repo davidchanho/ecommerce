@@ -1,0 +1,24 @@
+import { Canvas, Meta, Story } from "@storybook/addon-docs";
+
+import Avatar from "./Avatar";
+
+<Meta title="Component/Avatar" component={Avatar} />
+
+# Avatar
+
+<Canvas>
+    <Story name="WithSrc">
+        <Avatar
+            src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png"
+            alt=""
+        />
+    </Story>
+</Canvas>
+
+# WithoutSrc
+
+<Canvas>
+    <Story name="WithoutSrc">
+        <Avatar/>
+    </Story>
+</Canvas>

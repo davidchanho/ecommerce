@@ -1,0 +1,74 @@
+@import "bootstrap/scss/functions";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/utilities";
+
+$utilities: map-merge(
+  $utilities,
+  (
+    "cursor": (
+      property: cursor,
+      class: cursor,
+      responsive: true,
+      values: auto pointer grab,
+    )
+  )
+);
+
+.form-check-input[type='radio'] { 
+    transform: scale(1.5); 
+}
+
+.dark {
+
+  /* redefine theme colors for dark theme */
+  $primary: #012345;
+  $secondary: #111111;
+  $success: #222222;
+  $dark: #000;
+  
+  $theme-colors: (
+      "primary": $primary,
+      "secondary": $secondary,
+      "success": $success,
+      "danger": $danger,
+      "info": $indigo,
+      "dark": $dark,
+      "light": $light,
+  );
+
+  /* redefine theme color variables */
+  @each $color, $value in $theme-colors {
+      --#{$variable-prefix}#{$color}: #{$value};
+  }
+
+  /* redefine theme color rgb vars (used for bg- colors) */
+  $theme-colors-rgb: map-loop($theme-colors, to-rgb, "$value");
+  @each $color, $value in $theme-colors-rgb {
+      --#{$variable-prefix}#{$color}-rgb: #{$value};
+  }
+
+  $body-color: #eeeeee;
+  $body-bg: #263C5C;
+  $text-primary: $white;
+  
+  --#{$variable-prefix}body-color: #{$body-color};
+  --#{$variable-prefix}body-bg: #{$body-bg};
+    
+  @import "bootstrap";
+}
+
+@import '~bootstrap/scss/bootstrap.scss';
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
