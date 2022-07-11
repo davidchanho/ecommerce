@@ -1,18 +1,42 @@
 import { client } from "../config/redis";
-
-interface ICartItem {
-    
-}
+import { ICartItem } from "../utils/types/cart.types";
+import { cartKey } from "./../utils/helpers/keys";
 
 class CartServices {
-    constructor() {}
-
-    async add_to_cart() {
-        await client.HSET("cart:1", "name", "t-shirt");
+    async addToCart(session: string, item: ICartItem) {
+        await client.hSet(cartKey(session), {
+            name: item.name,
+            quantity: item.quantity,
+        });
     }
 
-    async get_to_cart() {
-        await client.HGET("cart:1", "name");
+    async getCart(session: string) {
+        try {
+            const result = await client.hGetAll(cartKey(session));
+
+            if (Object.keys(result).length === 0) {
+                throw new Error("Cart not found");
+            }
+
+            return {
+                ...result,
+                quantity: parseInt(result.quantity),
+            };
+        } catch (error) {
+            throw new Error("Cart not found");
+        }
+    }
+
+    async removeCartItem(session: string, item: ICartItem) {
+        await client.hDel(cartKey(session), item.name);
+    }
+
+    async removeCart(session: string) {
+        return await client.del(cartKey(session));
+    }
+
+    async getCartCount(session: string) {
+        return await client.hLen(cartKey(session));
     }
 }
 

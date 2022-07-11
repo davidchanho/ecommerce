@@ -1,5 +1,6 @@
 import express from "express";
 import authRoutes from "./auth.routes";
+import cartRoutes from "./cart.routes";
 import categoryRoutes from "./category.routes";
 import emailRoutes from "./email.routes";
 import productRoutes from "./product.routes";
@@ -12,5 +13,6 @@ router.use("/products", productRoutes);
 router.use("/categories", categoryRoutes);
 router.use("/users", userRoutes);
 router.use("/email", emailRoutes);
+router.use("/cart", cartRoutes);
 
 export default router;
