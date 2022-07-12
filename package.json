@@ -1,0 +1,13 @@
+{
+  "name": "ecommerce",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/davidchanho/ecommerce.git",
+  "author": "davidchanho <davidho.crd@gmail.com>",
+  "license": "MIT",
+  "workspaces": [
+    "client",
+    "server",
+    "ui"
+  ]
+}
